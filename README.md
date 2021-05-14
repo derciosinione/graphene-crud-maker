@@ -15,4 +15,3 @@ Quick start
         ...
         'graphene_crud_maker',
     ]
-
