@@ -1,0 +1,5 @@
+django-cors-headers
+django-filter
+django-graphql-jwt
+graphene
+graphene-django
