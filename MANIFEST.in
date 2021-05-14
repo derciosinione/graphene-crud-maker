@@ -1,3 +1,3 @@
 include LICENSE
 include README.rst
-recursive-include graphene_crud_maker/base *
+recursive-include graphene_crud_maker *
