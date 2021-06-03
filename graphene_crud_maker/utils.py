@@ -2,6 +2,7 @@ from graphene import relay, Int
 from django.forms.models import model_to_dict
 from django.forms import ModelForm
 
+
 class CustomNode(relay.Node):
     class Meta:
         name = 'Node'
@@ -58,7 +59,6 @@ class CustomModelForm(ModelForm):
             if field.widget.is_required:
                 field.widget.is_required = False
                 field.required = False
-
 
 class CustomConnection(relay.Connection):
     class Meta:

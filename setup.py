@@ -24,6 +24,7 @@ setup(
     author_email='derciosinione@gmail.com',
     install_requires=[            # I get to this in a second
         'graphene',
+        'django',
         'graphene-django',
         'django-filter',
     ],
