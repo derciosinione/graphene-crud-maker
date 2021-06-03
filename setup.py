@@ -9,7 +9,7 @@ os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
 setup(
     name='graphene-crud-maker',
-    version='0.0.1',
+    version='0.0.2',
     packages=find_packages(),
     include_package_data=True,
     license='MIT License',  # example license
@@ -22,6 +22,11 @@ setup(
     },
     author='Dércio Sinione',
     author_email='derciosinione@gmail.com',
+    install_requires=[            # I get to this in a second
+        'graphene',
+        'graphene-django',
+        'django-filter',
+    ],
     classifiers=[
         "Development Status :: 4 - Beta",
         "Intended Audience :: Developers",
