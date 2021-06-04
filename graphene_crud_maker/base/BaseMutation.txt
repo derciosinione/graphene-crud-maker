@@ -1,13 +1,13 @@
 from graphene import Field
-from django import forms
-from graphene import ID, Mutation, Boolean
+from graphene import ID, Mutation, List
 from graphene_django.forms.mutation import DjangoModelFormMutation
+from graphene_crud_maker.utils import CustomModelForm
 
 from App_.models import Base_
 from App_.graphql.query import Base_Type
 
 
-class Base_Form(forms.ModelForm):
+class Base_Form(CustomModelForm):
     class Meta:
         model = Base_
         pass_fields_
@@ -27,16 +27,18 @@ class Base_Mutation(DjangoModelFormMutation):
             return None
 
 
+
 class RemoveBase_(Mutation):
     class Arguments:
-        id = ID(required=True)
+        ids = List(ID)
 
-    deleted = Boolean()
+    class Meta:
+        output = List(Base_Type)
 
-    def mutate(self, info, id):
-        try:
-            obj = Base_.objects.get(pk=id)
-            obj.delete()
-            return RemoveBase_(deleted=True)
-        except Base_.DoesNotExist:
-            return None
+    def mutate(self, info, **kwargs):
+        deleted_items = []
+        for item in Base_.objects.filter(pk__in=kwargs['ids']):
+            item.delete()
+            deleted_items.append(item)
+        return deleted_items
+

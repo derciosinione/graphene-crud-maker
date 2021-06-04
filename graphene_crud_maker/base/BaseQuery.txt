@@ -1,5 +1,6 @@
 from graphene_django import DjangoObjectType
-from Core.utils import CustomNode
+from graphene_crud_maker.utils import CustomNode, CustomConnection
+
 from App_.models import Base_
 
 
@@ -10,3 +11,5 @@ class Base_Type(DjangoObjectType):
             'id': ['exact',],
         }
         interfaces = (CustomNode,)
+        connection_class = CustomConnection
+
