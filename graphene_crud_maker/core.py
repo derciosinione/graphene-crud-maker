@@ -114,7 +114,7 @@ class CrudMaker(object):
                             if line.__contains__('pass_fields_'):
                                 takedModel = apps.get_model(self.app_name, model)
                                 # field = [field.name for field in takedModel._meta.get_fields()]
-                                field = sorted([field.name for field in takedModel._meta.concrete_fields])
+                                field = sorted((field.name for field in takedModel._meta.concrete_fields))
 
                                 # Removing exclude_fields
                                 for item in self.__exclude_fields:
@@ -139,3 +139,4 @@ class CrudMaker(object):
 
             self.list_class.clear()
             self.list_import.clear()
+
