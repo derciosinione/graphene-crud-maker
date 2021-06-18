@@ -23,8 +23,8 @@ class Base_Mutation(DjangoModelFormMutation):
         try:
             data = form.save()
             return Base_Mutation(data=data)
-        except form.DoesNotExis:
-            return None
+        except Exception as ex:
+            raise ex
 
 
 

@@ -29,15 +29,17 @@ class CrudMaker(object):
             os.makedirs(os.path.join(graphql_path, 'query'))
             os.makedirs(os.path.join(graphql_path, 'mutation'))
 
-        with open(os.path.join(graphql_path, f'__init__.py'), 'w') as fw: pass
+        if not os.path.join(graphql_path, '__init__.py'):
+            with open(os.path.join(graphql_path, f'__init__.py'), 'w') as fw: pass
 
-        with open(os.path.join(base_path, f'BaseSchema.txt'), 'r') as fr:
-            ### WRITING NEW QUERY FILE
-            with open(os.path.join(graphql_path, 'schema.py'), 'w') as fw:
-                for line in fr.readlines():
-                    if line.__contains__('App_'):
-                        line = line.replace('App_', self.app_name)
-                    fw.write(line)
+        if not os.path.join(graphql_path, 'schema.py'):
+            with open(os.path.join(base_path, f'BaseSchema.txt'), 'r') as fr:
+                ### WRITING NEW schema FILE
+                with open(os.path.join(graphql_path, 'schema.py'), 'w') as fw:
+                    for line in fr.readlines():
+                        if line.__contains__('App_'):
+                            line = line.replace('App_', self.app_name)
+                        fw.write(line)
 
 
     def __create_queries(self, base_path):
@@ -66,7 +68,7 @@ class CrudMaker(object):
                                 line = line.replace('App_', self.app_name)
                                 print(line)
                             fw.write(line)
-                
+
 
         # Writing __init__.py for queries
         with open(os.path.join(query_path, f'__init__.py'), 'w') as fw:
