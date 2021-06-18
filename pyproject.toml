@@ -1,9 +1,8 @@
 [build-system]
 requires = [
-    "setuptools",
-    "wheel",
     "graphene",
-    "graphene-django"
+    "graphene-django",
+    "django-filter"
     ]
     
 build-backend = "setuptools.build_meta"
