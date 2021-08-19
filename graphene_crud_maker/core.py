@@ -29,10 +29,10 @@ class CrudMaker(object):
             os.makedirs(os.path.join(graphql_path, 'query'))
             os.makedirs(os.path.join(graphql_path, 'mutation'))
 
-        if not os.path.join(graphql_path, '__init__.py'):
+        if not os.path.exists(os.path.join(graphql_path, '__init__.py')):
             with open(os.path.join(graphql_path, f'__init__.py'), 'w') as fw: pass
 
-        if not os.path.join(graphql_path, 'schema.py'):
+        if not os.path.exists(os.path.join(graphql_path, 'schema.py')):
             with open(os.path.join(base_path, f'BaseSchema.txt'), 'r') as fr:
                 ### WRITING NEW schema FILE
                 with open(os.path.join(graphql_path, 'schema.py'), 'w') as fw:
@@ -115,15 +115,17 @@ class CrudMaker(object):
                                 line = line.replace('App_', self.app_name)
                             if line.__contains__('pass_fields_'):
                                 takedModel = apps.get_model(self.app_name, model)
-                                # field = [field.name for field in takedModel._meta.get_fields()]
                                 field = sorted((field.name for field in takedModel._meta.concrete_fields))
+                                excludeFields = []
 
-                                # Removing exclude_fields
                                 for item in self.__exclude_fields:
                                     if field.__contains__(item):
-                                        field.remove(item)
+                                        # field.remove(item)
+                                        excludeFields.append(item)
 
-                                line = line.replace('pass_fields_', f'fields = {field}')
+
+                                # line = line.replace('pass_fields_', f'fields = {field}')
+                                line = line.replace('pass_fields_', f'exclude = {excludeFields}')
                             fw.write(line)
 
         # Writing __init__.py for mutations
