@@ -1,5 +1,6 @@
 import os
 from django.apps import apps
+from django.conf import settings
 
 
 class CrudMaker(object):
@@ -11,6 +12,8 @@ class CrudMaker(object):
 
         # Get All Django Models
         self.__all_models = [x.__name__ for x in apps.get_app_config(app_name).get_models()]
+        django_settings_module = settings.SETTINGS_MODULE
+        self.__settings_module = django_settings_module.split('.')[0]
         self.__exclude_fields = list(exclude_fields)
         self.__graphql_path = os.path.join(app_name, 'graphql')
         self.__base_path = os.path.join(self.BASE_DIR, 'graphene_crud_maker', 'base')
@@ -20,6 +23,7 @@ class CrudMaker(object):
         self.__create_Api_folder(self.__graphql_path, self.__base_path)
         self.__create_queries(self.__base_path)
         self.__create_mutations(self.__base_path)
+        self.__create_custom_schema(self.__base_path)
 
 
     def __create_Api_folder(self, graphql_path, base_path):
@@ -88,6 +92,21 @@ class CrudMaker(object):
             fw.write('\n')
             self.list_class.clear()
             self.list_import.clear()
+
+    def __create_custom_schema(self, base_path):
+        module_path = self.__settings_module
+        
+        if not os.path.exists(os.path.join(module_path, 'schema')):
+            os.makedirs(os.path.join(module_path, 'schema'))
+
+        if not os.path.exists(os.path.join(module_path,'schema', 'schema.py')):
+            with open(os.path.join(base_path, f'CoreSchema.txt'), 'r') as fr:
+                ### WRITING NEW schema FILE
+                with open(os.path.join(module_path,'schema', 'schema.py'), 'w') as fw:
+                    for line in fr.readlines():
+                        if line.__contains__('App_'):
+                            line = line.replace('App_', self.app_name)
+                        fw.write(line)
 
 
     def __create_mutations(self, base_path):
