@@ -24,6 +24,7 @@ class CrudMaker(object):
         self.__create_queries(self.__base_path)
         self.__create_mutations(self.__base_path)
         self.__create_custom_schema(self.__base_path)
+        self.__create_relay_query(self.__base_path)
 
 
     def __create_Api_folder(self, graphql_path, base_path):
@@ -77,7 +78,7 @@ class CrudMaker(object):
         # Writing __init__.py for queries
         with open(os.path.join(query_path, f'__init__.py'), 'w') as fw:
             fw.write('from graphene import ObjectType \n')
-            fw.write('from Core.utils import CustomNode \n')
+            fw.write(f'from {self.__settings_module}.schema.utils import CustomNode \n')
             fw.write('from graphene_django.filter import DjangoFilterConnectionField \n')
             fw.write('\n')
 
@@ -108,6 +109,21 @@ class CrudMaker(object):
                             line = line.replace('App_', self.app_name)
                         fw.write(line)
 
+        
+    def __create_relay_query(self, base_path):
+        module_path = self.__settings_module
+        
+        if not os.path.exists(os.path.join(module_path, 'schema')):
+            os.makedirs(os.path.join(module_path, 'schema'))
+
+        if not os.path.exists(os.path.join(module_path,'schema', 'utils.py')):
+            with open(os.path.join(base_path, f'BaseRelay.txt'), 'r') as fr:
+                ### WRITING NEW utils FILE
+                with open(os.path.join(module_path,'schema', 'utils.py'), 'w') as fw:
+                    for line in fr.readlines():
+                        fw.write(line)
+
+        
 
     def __create_mutations(self, base_path):
         print('You called Create mutations')
