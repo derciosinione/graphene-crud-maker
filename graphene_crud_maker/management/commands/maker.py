@@ -15,6 +15,7 @@ class Command(BaseCommand):
             "--exclude",
             nargs="*",
             type=str,
+            default=[],
             help="Fields to exclude in the CRUD (id, createdAt, updatedAt)",
         )
 
