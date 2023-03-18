@@ -18,6 +18,12 @@ This is a project to auto generate a graphql crud using graphene django
 pip install graphene-crud-maker
 ```
 
+## Create a Django project
+
+```bash
+django-admin startproject core .
+```
+
 ## Add "graphene_crud_maker" to your INSTALLED_APPS setting like this:
 
 
@@ -27,6 +33,46 @@ pip install graphene-crud-maker
         'graphene_crud_maker',
     ]
 ```
+
+## Add GRAPHENE to your settings.py
+
+define the schema location for Graphene in the settings.py file of your Django project:
+
+link: https://docs.graphene-python.org/projects/django/en/latest/
+
+```python
+    GRAPHENE = {
+        "ATOMIC_MUTATIONS": True,
+        'SCHEMA': 'Core.schema.schema.schema',
+        "SCHEMA_INDENT": 4,
+        "MIDDLEWARE": [
+            "graphene_django.debug.DjangoDebugMiddleware",
+            'graphql_jwt.middleware.JSONWebTokenMiddleware',
+        ]
+    }
+```
+
+## Add URLS to your urls.py
+
+```python
+    from django.conf.urls import url
+    from django.views.decorators.csrf import csrf_exempt
+    from graphql_jwt.decorators import jwt_cookie
+    from graphene_django.views import GraphQLView
+
+    urlpatterns = [
+        # ...
+        url(r"graphql", csrf_exempt(jwt_cookie(GraphQLView.as_view(graphiql=True)))),
+    ]
+```
+
+## Create the app
+
+```bash
+python3 manage.py startapp myapp
+```
+
+*Note: create models*
 
 
 ## Usage
@@ -51,8 +97,20 @@ optional arguments:
                         ...
 ```
 
-### Example command to create graphql
+## Command to create GraphQL
 
 ```bash
 python3 manage.py maker -n myapp
+```
+
+## Run the server
+
+```bash
+python3 manage.py runserver
+```
+
+## GraphiQL
+
+```bash
+http://localhost:8000/graphql
 ```
