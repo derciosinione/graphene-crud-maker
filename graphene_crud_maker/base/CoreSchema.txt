@@ -1,0 +1,43 @@
+import graphql_jwt
+from graphene import ObjectType, Schema, Field
+from graphql_jwt.refresh_token.signals import refresh_token_rotated
+from django.dispatch import receiver
+from graphql_jwt.relay import JSONWebTokenMutation
+
+
+
+
+from App_.graphql.schema import Mutation as App_Mutation
+from App_.graphql.schema import Query as App_Query
+
+
+
+""" 
+from myapp.graphql.query import UserType
+
+class ObtainJSONWebToken(JSONWebTokenMutation):
+    user = Field(UserType) 
+
+    @classmethod
+    def resolve(cls, root, info, **kwargs):
+        return cls(user=info.context.user)
+
+# add fields to the mutation
+class Mutation(App_Mutation, ObjectType):
+    token_auth = ObtainJSONWebToken.Field()
+ """     
+
+class Query(App_Query):
+    pass
+
+
+class Mutation(App_Mutation, ObjectType):
+    verify_token = graphql_jwt.Verify.Field()
+    refresh_token = graphql_jwt.Refresh.Field()
+    revoke_token = graphql_jwt.Revoke.Field()
+
+    @receiver(refresh_token_rotated)
+    def revoke_refresh_token(sender, request, refresh_token, **kwargs):
+        refresh_token.revoke(request)
+
+schema = Schema(query=Query, mutation=Mutation)
