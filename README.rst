@@ -30,10 +30,13 @@ django-admin startproject core .
 ```python
     INSTALLED_APPS = [
         ...
+        'myapp',
         'graphene_crud_maker',
         'graphene_django',
     ]
 ```
+
+*Note: "myapp" is the name of the app*
 
 ## Add GRAPHENE to your settings.py
 
