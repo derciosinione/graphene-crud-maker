@@ -9,7 +9,7 @@ os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
 setup(
     name='graphene-crud-maker',
-    version='1.0.0',
+    version='1.1.0',
     packages=find_packages(),
     include_package_data=True,
     license='MIT License',  # example license
@@ -23,6 +23,7 @@ setup(
     author='Dércio Sinione',
     author_email='derciosinione@gmail.com',
     contributors=[
+       ['Dércio Sinione', 'derciosinione@gmail.com', 'maintainer'],
        ['Paulo Lopes Estevão', 'pl1745240@gmail.com', 'maintainer'],
      ],
     install_requires=[            # I get to this in a second
