@@ -31,6 +31,7 @@ django-admin startproject core .
     INSTALLED_APPS = [
         ...
         'graphene_crud_maker',
+        'graphene_django',
     ]
 ```
 
@@ -43,7 +44,7 @@ link: https://docs.graphene-python.org/projects/django/en/latest/
 ```python
     GRAPHENE = {
         "ATOMIC_MUTATIONS": True,
-        'SCHEMA': 'Core.schema.schema.schema',
+        'SCHEMA': 'core.schema.schema.schema',
         "SCHEMA_INDENT": 4,
         "MIDDLEWARE": [
             "graphene_django.debug.DjangoDebugMiddleware",
@@ -51,6 +52,8 @@ link: https://docs.graphene-python.org/projects/django/en/latest/
         ]
     }
 ```
+
+*Note name "core" is the name of the project*
 
 ## Add URLS to your urls.py
 
